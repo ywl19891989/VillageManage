@@ -70,7 +70,19 @@
                                  @"pwd": [NetWorkManager md5:pwd]
                                  };
         [NetWorkManager Login:params WithSuccess:^(AFHTTPRequestOperation *operation, id data) {
-            
+            if (data) {
+                NSLog(@"data %@", data);
+                
+                NSDictionary* userData = data[@"records"][0];
+                
+                int roleType = [userData[@"RoleType"] integerValue];
+                
+                if ( roleType == 1) {
+                    [AppDelegate jumpToLeaderManage];
+                } else if(roleType == 2) {
+                    [AppDelegate jumpToVillageSelect];
+                }
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];

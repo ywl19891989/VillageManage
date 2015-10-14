@@ -38,6 +38,25 @@
 		5C21789A1BCD62D1004DE74B /* 新增队员.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C21787D1BCD62D1004DE74B /* 新增队员.html */; };
 		5C21789B1BCD62D1004DE74B /* 院落详情.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C21787E1BCD62D1004DE74B /* 院落详情.html */; };
 		5C21789C1BCD62D1004DE74B /* 院落详情(APP).html in Resources */ = {isa = PBXBuildFile; fileRef = 5C21787F1BCD62D1004DE74B /* 院落详情(APP).html */; };
+		5C670A221BCEA8B100A70993 /* LeaderManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C670A201BCEA8B100A70993 /* LeaderManage.m */; };
+		5C670A231BCEA8B100A70993 /* LeaderManage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A211BCEA8B100A70993 /* LeaderManage.xib */; };
+		5C670A271BCEA9D900A70993 /* common_btn_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A241BCEA9D900A70993 /* common_btn_select.png */; };
+		5C670A281BCEA9D900A70993 /* common_btn_unselect.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A251BCEA9D900A70993 /* common_btn_unselect.png */; };
+		5C670A2F1BCEAAE600A70993 /* leader_manage_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A2B1BCEAAE600A70993 /* leader_manage_bg.png */; };
+		5C670A301BCEAAE600A70993 /* lm_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A2C1BCEAAE600A70993 /* lm_icon1.png */; };
+		5C670A311BCEAAE600A70993 /* lm_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A2D1BCEAAE600A70993 /* lm_icon2.png */; };
+		5C670A321BCEAAE600A70993 /* lm_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A2E1BCEAAE600A70993 /* lm_icon3.png */; };
+		5C670A361BCEAFD300A70993 /* VillageDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C670A341BCEAFD300A70993 /* VillageDetail.m */; };
+		5C670A371BCEAFD300A70993 /* VillageDetail.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A351BCEAFD300A70993 /* VillageDetail.xib */; };
+		5C670A401BCEB11200A70993 /* vm_btn_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A391BCEB11200A70993 /* vm_btn_bg.png */; };
+		5C670A411BCEB11200A70993 /* vm_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A3A1BCEB11200A70993 /* vm_icon1.png */; };
+		5C670A421BCEB11200A70993 /* vm_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A3B1BCEB11200A70993 /* vm_icon2.png */; };
+		5C670A431BCEB11200A70993 /* vm_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A3C1BCEB11200A70993 /* vm_icon3.png */; };
+		5C670A441BCEB11200A70993 /* vm_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A3D1BCEB11200A70993 /* vm_icon4.png */; };
+		5C670A451BCEB11200A70993 /* vm_icon5.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A3E1BCEB11200A70993 /* vm_icon5.png */; };
+		5C670A461BCEB11200A70993 /* vm_icon6.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A3F1BCEB11200A70993 /* vm_icon6.png */; };
+		5C670A481BCEB1DB00A70993 /* vm_left_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A471BCEB1DB00A70993 /* vm_left_bg.png */; };
+		5C670A4A1BCEB2F700A70993 /* vm_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C670A491BCEB2F700A70993 /* vm_select.png */; };
 		5CC94FDA1BCA85FD0042DCE7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC94FD91BCA85FD0042DCE7 /* Foundation.framework */; };
 		5CC94FDC1BCA85FD0042DCE7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC94FDB1BCA85FD0042DCE7 /* CoreGraphics.framework */; };
 		5CC94FDE1BCA85FD0042DCE7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CC94FDD1BCA85FD0042DCE7 /* UIKit.framework */; };
@@ -170,6 +189,27 @@
 		5C21787D1BCD62D1004DE74B /* 新增队员.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "新增队员.html"; path = "appV5/新增队员.html"; sourceTree = "<group>"; };
 		5C21787E1BCD62D1004DE74B /* 院落详情.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "院落详情.html"; path = "appV5/院落详情.html"; sourceTree = "<group>"; };
 		5C21787F1BCD62D1004DE74B /* 院落详情(APP).html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "院落详情(APP).html"; path = "appV5/院落详情(APP).html"; sourceTree = "<group>"; };
+		5C670A1F1BCEA8B100A70993 /* LeaderManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderManage.h; sourceTree = "<group>"; };
+		5C670A201BCEA8B100A70993 /* LeaderManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderManage.m; sourceTree = "<group>"; };
+		5C670A211BCEA8B100A70993 /* LeaderManage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeaderManage.xib; sourceTree = "<group>"; };
+		5C670A241BCEA9D900A70993 /* common_btn_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = common_btn_select.png; sourceTree = "<group>"; };
+		5C670A251BCEA9D900A70993 /* common_btn_unselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = common_btn_unselect.png; sourceTree = "<group>"; };
+		5C670A2B1BCEAAE600A70993 /* leader_manage_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leader_manage_bg.png; sourceTree = "<group>"; };
+		5C670A2C1BCEAAE600A70993 /* lm_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lm_icon1.png; sourceTree = "<group>"; };
+		5C670A2D1BCEAAE600A70993 /* lm_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lm_icon2.png; sourceTree = "<group>"; };
+		5C670A2E1BCEAAE600A70993 /* lm_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lm_icon3.png; sourceTree = "<group>"; };
+		5C670A331BCEAFD300A70993 /* VillageDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VillageDetail.h; sourceTree = "<group>"; };
+		5C670A341BCEAFD300A70993 /* VillageDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VillageDetail.m; sourceTree = "<group>"; };
+		5C670A351BCEAFD300A70993 /* VillageDetail.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VillageDetail.xib; sourceTree = "<group>"; };
+		5C670A391BCEB11200A70993 /* vm_btn_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_btn_bg.png; sourceTree = "<group>"; };
+		5C670A3A1BCEB11200A70993 /* vm_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_icon1.png; sourceTree = "<group>"; };
+		5C670A3B1BCEB11200A70993 /* vm_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_icon2.png; sourceTree = "<group>"; };
+		5C670A3C1BCEB11200A70993 /* vm_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_icon3.png; sourceTree = "<group>"; };
+		5C670A3D1BCEB11200A70993 /* vm_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_icon4.png; sourceTree = "<group>"; };
+		5C670A3E1BCEB11200A70993 /* vm_icon5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_icon5.png; sourceTree = "<group>"; };
+		5C670A3F1BCEB11200A70993 /* vm_icon6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_icon6.png; sourceTree = "<group>"; };
+		5C670A471BCEB1DB00A70993 /* vm_left_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_left_bg.png; sourceTree = "<group>"; };
+		5C670A491BCEB2F700A70993 /* vm_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vm_select.png; sourceTree = "<group>"; };
 		5CC94FD61BCA85FD0042DCE7 /* VillageManage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VillageManage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CC94FD91BCA85FD0042DCE7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5CC94FDB1BCA85FD0042DCE7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -343,6 +383,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C670A2A1BCEAAE600A70993 /* leader_manage */ = {
+			isa = PBXGroup;
+			children = (
+				5C670A2B1BCEAAE600A70993 /* leader_manage_bg.png */,
+				5C670A2C1BCEAAE600A70993 /* lm_icon1.png */,
+				5C670A2D1BCEAAE600A70993 /* lm_icon2.png */,
+				5C670A2E1BCEAAE600A70993 /* lm_icon3.png */,
+			);
+			path = leader_manage;
+			sourceTree = "<group>";
+		};
+		5C670A381BCEB11200A70993 /* vilage_manage */ = {
+			isa = PBXGroup;
+			children = (
+				5C670A491BCEB2F700A70993 /* vm_select.png */,
+				5C670A471BCEB1DB00A70993 /* vm_left_bg.png */,
+				5C670A391BCEB11200A70993 /* vm_btn_bg.png */,
+				5C670A3A1BCEB11200A70993 /* vm_icon1.png */,
+				5C670A3B1BCEB11200A70993 /* vm_icon2.png */,
+				5C670A3C1BCEB11200A70993 /* vm_icon3.png */,
+				5C670A3D1BCEB11200A70993 /* vm_icon4.png */,
+				5C670A3E1BCEB11200A70993 /* vm_icon5.png */,
+				5C670A3F1BCEB11200A70993 /* vm_icon6.png */,
+			);
+			path = vilage_manage;
+			sourceTree = "<group>";
+		};
 		5CC94FCD1BCA85FD0042DCE7 = {
 			isa = PBXGroup;
 			children = (
@@ -667,6 +734,12 @@
 				5C21785E1BCD60DC004DE74B /* WebView.h */,
 				5C21785F1BCD60DC004DE74B /* WebView.m */,
 				5C2178601BCD60DC004DE74B /* WebView.xib */,
+				5C670A1F1BCEA8B100A70993 /* LeaderManage.h */,
+				5C670A201BCEA8B100A70993 /* LeaderManage.m */,
+				5C670A211BCEA8B100A70993 /* LeaderManage.xib */,
+				5C670A331BCEAFD300A70993 /* VillageDetail.h */,
+				5C670A341BCEAFD300A70993 /* VillageDetail.m */,
+				5C670A351BCEAFD300A70993 /* VillageDetail.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -674,6 +747,10 @@
 		5CC951531BCA8BB40042DCE7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5C670A381BCEB11200A70993 /* vilage_manage */,
+				5C670A2A1BCEAAE600A70993 /* leader_manage */,
+				5C670A241BCEA9D900A70993 /* common_btn_select.png */,
+				5C670A251BCEA9D900A70993 /* common_btn_unselect.png */,
 				5C2178631BCD62D1004DE74B /* (APP)村落列表.html */,
 				5C2178641BCD62D1004DE74B /* (APP)村落详情.html */,
 				5C2178651BCD62D1004DE74B /* (APP)户口详情-经济状况.html */,
@@ -826,12 +903,15 @@
 				5CC94FF21BCA85FD0042DCE7 /* Images.xcassets in Resources */,
 				5CC951D91BCA8D1F0042DCE7 /* login_input_pic.png in Resources */,
 				5C2178991BCD62D1004DE74B /* 社队内容.html in Resources */,
+				5C670A421BCEB11200A70993 /* vm_icon2.png in Resources */,
 				5CC952041BCABA030042DCE7 /* vs_top.png in Resources */,
 				5CC951291BCA892C0042DCE7 /* 37x-Checkmark@2x.png in Resources */,
 				5C21788E1BCD62D1004DE74B /* image in Resources */,
 				5CC951DA1BCA8D1F0042DCE7 /* login_logo.png in Resources */,
+				5C670A281BCEA9D900A70993 /* common_btn_unselect.png in Resources */,
 				5C2178951BCD62D1004DE74B /* 房屋详情(APP).html in Resources */,
 				5CC951F41BCAA5F50042DCE7 /* add_mem_btn_bg2.png in Resources */,
+				5C670A481BCEB1DB00A70993 /* vm_left_bg.png in Resources */,
 				5C21788C1BCD62D1004DE74B /* (APP)社队内容.html in Resources */,
 				5C21789C1BCD62D1004DE74B /* 院落详情(APP).html in Resources */,
 				5C21788A1BCD62D1004DE74B /* (APP)社队列表.html in Resources */,
@@ -840,6 +920,8 @@
 				5CC951F61BCAA5F50042DCE7 /* add_mem_text.png in Resources */,
 				5CC951D51BCA8D1F0042DCE7 /* login_btn.png in Resources */,
 				5C2178621BCD60DC004DE74B /* WebView.xib in Resources */,
+				5C670A271BCEA9D900A70993 /* common_btn_select.png in Resources */,
+				5C670A411BCEB11200A70993 /* vm_icon1.png in Resources */,
 				5C21789A1BCD62D1004DE74B /* 新增队员.html in Resources */,
 				5CC951281BCA892C0042DCE7 /* 37x-Checkmark.png in Resources */,
 				5C2178811BCD62D1004DE74B /* (APP)村落详情.html in Resources */,
@@ -847,6 +929,7 @@
 				5C2178901BCD62D1004DE74B /* style.css in Resources */,
 				5C2178921BCD62D1004DE74B /* 村名基本情况问卷调查.html in Resources */,
 				5C2178891BCD62D1004DE74B /* (APP)人口详情.html.bak in Resources */,
+				5C670A2F1BCEAAE600A70993 /* leader_manage_bg.png in Resources */,
 				5C2178881BCD62D1004DE74B /* (APP)人口详情.html in Resources */,
 				5CC952081BCABA030042DCE7 /* vs_update_ico.png in Resources */,
 				5CC951171BCA892C0042DCE7 /* left_arrow.png in Resources */,
@@ -856,20 +939,31 @@
 				5CC951D71BCA8D1F0042DCE7 /* login_check_unselect.png in Resources */,
 				5C2178861BCD62D1004DE74B /* (APP)户口详情-院落信息列表.html.bak in Resources */,
 				5C21788B1BCD62D1004DE74B /* (APP)社队列表.html.bak in Resources */,
+				5C670A431BCEB11200A70993 /* vm_icon3.png in Resources */,
 				5CC951F31BCAA5F50042DCE7 /* add_mem_btn_bg.png in Resources */,
 				5C21789B1BCD62D1004DE74B /* 院落详情.html in Resources */,
 				5CC951DB1BCA8D1F0042DCE7 /* login_name.png in Resources */,
+				5C670A4A1BCEB2F700A70993 /* vm_select.png in Resources */,
+				5C670A231BCEA8B100A70993 /* LeaderManage.xib in Resources */,
 				5CC952031BCABA030042DCE7 /* vs_cell_bg.png in Resources */,
 				5CC951DC1BCA8D1F0042DCE7 /* login_password.png in Resources */,
+				5C670A301BCEAAE600A70993 /* lm_icon1.png in Resources */,
 				5CC951191BCA892C0042DCE7 /* right_arrow.png in Resources */,
+				5C670A461BCEB11200A70993 /* vm_icon6.png in Resources */,
 				5C21788D1BCD62D1004DE74B /* (APP)社队内容.html.bak in Resources */,
 				5C2178941BCD62D1004DE74B /* 房屋详情.html in Resources */,
+				5C670A451BCEB11200A70993 /* vm_icon5.png in Resources */,
+				5C670A441BCEB11200A70993 /* vm_icon4.png in Resources */,
+				5C670A321BCEAAE600A70993 /* lm_icon3.png in Resources */,
 				5CC951181BCA892C0042DCE7 /* left_arrow@2x.png in Resources */,
 				5C2178911BCD62D1004DE74B /* 村落详情.html in Resources */,
+				5C670A401BCEB11200A70993 /* vm_btn_bg.png in Resources */,
 				5CC951DD1BCA8D1F0042DCE7 /* login_user_icon.png in Resources */,
+				5C670A371BCEAFD300A70993 /* VillageDetail.xib in Resources */,
 				5C2178931BCD62D1004DE74B /* 队长主页.html in Resources */,
 				5CC951F51BCAA5F50042DCE7 /* add_mem_Input box_bg.png in Resources */,
 				5CC951521BCA89760042DCE7 /* LoginView.xib in Resources */,
+				5C670A311BCEAAE600A70993 /* lm_icon2.png in Resources */,
 				5C2178971BCD62D1004DE74B /* 人口详情.html in Resources */,
 				5CC9511A1BCA892C0042DCE7 /* right_arrow@2x.png in Resources */,
 				5CC9513E1BCA892C0042DCE7 /* UzysAssetPickerController.bundle in Resources */,
@@ -902,6 +996,7 @@
 				5CC951231BCA892C0042DCE7 /* JGProgressHUDIndicatorView.m in Sources */,
 				5CC950FF1BCA892C0042DCE7 /* AFHTTPRequestOperationManager.m in Sources */,
 				5CC951161BCA892C0042DCE7 /* CKCalendarView.m in Sources */,
+				5C670A221BCEA8B100A70993 /* LeaderManage.m in Sources */,
 				5CC951321BCA892C0042DCE7 /* pinyin.c in Sources */,
 				5CC951201BCA892C0042DCE7 /* JGProgressHUDFadeAnimation.m in Sources */,
 				5CC951041BCA892C0042DCE7 /* AFURLConnectionOperation.m in Sources */,
@@ -937,6 +1032,7 @@
 				5CC9513C1BCA892C0042DCE7 /* UITableView+DelegateBlocks.m in Sources */,
 				5CC951241BCA892C0042DCE7 /* JGProgressHUDPieIndicatorView.m in Sources */,
 				5CC951FA1BCAB9890042DCE7 /* VillageSelect.m in Sources */,
+				5C670A361BCEAFD300A70993 /* VillageDetail.m in Sources */,
 				5CC951051BCA892C0042DCE7 /* AFURLRequestSerialization.m in Sources */,
 				5CC951381BCA892C0042DCE7 /* SSKeychain.m in Sources */,
 				5CC94FEA1BCA85FD0042DCE7 /* AppDelegate.m in Sources */,

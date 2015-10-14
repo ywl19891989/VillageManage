@@ -135,7 +135,7 @@ NM_PROPERTY_DEFINE(NSString*, OrderAddr);
             [AppDelegate ShowTips:[NSString stringWithFormat:@"%@", dic[@"reason"]]];
             success(operation, nil);
         } else {
-            success(operation, [NSString stringWithFormat:@"%@", dic[@"reason"]]);
+            success(operation, dic);
             [AppDelegate ShowToast:@"Load Completed!"];
         }
     };

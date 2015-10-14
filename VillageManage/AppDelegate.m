@@ -14,6 +14,8 @@
 #import "RegisterView.h"
 #import "VillageSelect.h"
 #import "WebView.h"
+#import "LeaderManage.h"
+#import "VillageDetail.h"
 
 @implementation AppDelegate
 
@@ -30,6 +32,8 @@ static UIWindow* mainWindow;
     CREATE_VIEW(WebView);
     [view LoadUrl:fileName];
 }
++ (void)jumpToLeaderManage {  CREATE_VIEW(LeaderManage); }
++ (void)jumpToVillageDetail { CREATE_VIEW(VillageDetail); }
 
 + (void)ShowTips:(NSString*)tipText
 {
@@ -79,8 +83,8 @@ static MBProgressHUD *loadingAlertView = nil;
     
     mainWindow = self.window;
     
-//    [AppDelegate jumpToLogin];
-    [AppDelegate jumpToWebWithFile:@"村落详情"];
+    [AppDelegate jumpToLogin];
+//    [AppDelegate jumpToWebWithFile:@"村落详情"];
     
     [NetWorkManager InitUserInfo];
     

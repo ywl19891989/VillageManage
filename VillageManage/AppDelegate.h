@@ -16,6 +16,8 @@
 + (void) jumpToRegister;
 + (void) jumpToVillageSelect;
 + (void) jumpToWebWithFile:(NSString*)fileName;
++ (void) jumpToLeaderManage;
++ (void) jumpToVillageDetail;
 
 + (void) ShowTips:(NSString*)tipsText;
 + (void) ShowToast:(NSString*)toastText;
