@@ -1,0 +1,535 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link href="./style.css" rel="stylesheet" type="text/css" />
+<title>村落详情</title>
+</head>
+<script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/stringbuilder.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/pagevalidate.js"></script>
+ 
+ <script type="text/javascript" charset="utf-8">
+                
+                // global variables
+                var db;
+                var shortName = 'WebSqlDB';
+                var version = '1.0';
+                var displayName = 'WebSqlDB';
+                var maxSize = 65535;
+                var vid=null;
+                var uid=null;//用户编号
+                function initValues(evid,euid){
+                	vid = evid;
+                	uid = euid;
+                }
+                
+                // this is called when an error happens in a transaction
+                function errorHandler(transaction, error) {
+                    alert('Error: ' + error.message + ' code: ' + error.code);
+                }
+            
+            // this is called when a successful transaction happens
+            function successCallBack() {
+                alert("DEBUGGING: success");
+                
+            }
+            
+            function nullHandler() {
+                
+            }
+            
+            // called when the application loads
+            function onBodyLoad() {
+                
+                // This alert is used to make sure the application is loaded correctly
+                // you can comment this out once you have the application working
+                alert("DEBUGGING: we are in the onBodyLoad() function");
+                
+                if (!window.openDatabase) {
+                    // not all mobile devices support databases  if it does not, the
+                    // following alert will display
+                    // indicating the device will not be albe to run this application
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                
+                // this line tries to open the database base locally on the device
+                // if it does not exist, it will create it and return a database
+                // object stored in variable db
+                db = openDatabase(shortName, version, displayName,maxSize);
+                
+                // this line will try to create the table User in the database just
+                // created/openned
+                var createSql='CREATE TABLE IF NOT EXISTS  tb_village_info(\
+									Vid varchar(20) NOT NULL PRIMARY KEY,Name varchar(256) NULL,\
+									Location varchar(256) NULL,	Descript TEXT NULL,Vc_name varchar(64) NULL,\
+									Secretary_name varchar(64) NULL,Vc_mobile varchar(16) NULL,Secretary_mobile varchar(16) NULL,\
+									ProID INTEGER NULL,CityID INTEGER NULL,Main_village varchar(128) NULL,\
+									Village_Branch varchar(128) NULL,\
+									Clinic varchar(2) NULL,\
+									Village_committee real NULL,\
+									Village_committee_location varchar(256) NULL,\
+									Hospital varchar(128) NULL,\
+									Hospital_location varchar(128) NULL,\
+									Hospital_distance real NULL,\
+									Kindergarten varchar(128) NULL,\
+									Kindergarten_location varchar(128) NULL,\
+									Kindergarten_distance real NULL,\
+									PrimarySchool varchar(128) NULL,\
+									PrimarySchool_location varchar(128) NULL,\
+									PrimarySchool_distance real NOT NULL,\
+									MiddleSchool varchar(128) NOT NULL,\
+									MiddleSchool_location varchar(128) NULL,\
+									MiddleSchool_diatance real NULL,\
+									isRead varchar(2) NOT NULL DEFAULT ('1'))';
+									//isRead 1表示为只读,即为服务器下载，不允许本地修改
+                db.transaction(function(tx){
+                            
+                               tx.executeSql( createSql,
+                               [],nullHandler,errorHandler);
+            	 },errorHandler,successCallBack);
+            	 bindDDl();
+           	   showDbValues();
+            }
+            function bindDDl(){
+            		 if (!window.openDatabase) return;
+            		 db.transaction(function(transaction) {
+                               transaction.executeSql('SELECT ProID,Name FROM tb_province;', [],
+                                                      function(transaction, result) {
+                                                      if (result == null || result.rows == null)  return;
+                                                      var ddlProvince = document.getElementById("ddlProvince");
+                                                      for (var i = 0; i < result.rows.length; i++) {
+                                                   		  var row = result.rows.item(i); 
+                                                   		  var option = '<option value='+row.ProID+'>'+row.Name+'</option>';
+                                                   		  jQuery("#ddlProvince").append(option);
+                                                   		   
+                                                      },errorHandler);
+                               },errorHandler,nullHandler);
+           }
+           
+          function setProviceSelect(selectValue)  
+					{  
+						var ddlProvince = document.getElementById("ddlProvince").options;  
+						for (var i=0; i<ddlProvince.length; i++) {  
+								if (ddlProvince[i].value==selectValue) {  
+								ddlProvince[i].selected=true;  
+								break;  
+							}
+						} 
+					}
+					
+					function setCitySelect(selectValue)  
+					{  
+						var ddlCity = document.getElementById("ddlCity").options;  
+						for (var i=0; i<ddlCity.length; i++) {  
+								if (ddlCity[i].value==selectValue) {  
+								ddlCity[i].selected=true;  
+								break;  
+							}
+						} 
+					}
+					
+					function setMainVillage(selectValue)  
+					{  
+						var ddlMainVillage = document.getElementById("ddlMainVillage").options;  
+						for (var i=0; i<ddlMainVillage.length; i++) {  
+								if (ddlMainVillage[i].value==selectValue) {  
+								ddlMainVillage[i].selected=true;  
+								break;  
+							}
+						} 
+					}
+					
+					function setVillageBranch(selectValue)  
+					{  
+						var ddlVillageBranch = document.getElementById("ddlVillageBranch").options;  
+						for (var i=0; i<ddlVillageBranch.length; i++) {  
+								if (ddlVillageBranch[i].value==selectValue) {  
+								ddlVillageBranch[i].selected=true;  
+								break;  
+							}
+						} 
+					}
+					
+					function setClinic(selectValue)  
+					{  
+						var ddlClinic = document.getElementById("ddlClinic").options;  
+						for (var i=0; i<ddlClinic.length; i++) {  
+								if (ddlClinic[i].value==selectValue) {  
+								ddlClinic[i].selected=true;  
+								break;  
+							}
+						} 
+					}
+				 
+				 
+           
+           function ddlProvince_select_change(){
+           		 if (!window.openDatabase) return;
+           	   var ddlProvince = document.getElementById("ddlProvince");
+           	   var index=ddlProvince.selectedIndex; //序号，取当前选中选项的序号
+           	   var proid = ddlProvince.options[index].value;
+           	   db.transaction(function(transaction) {
+                               transaction.executeSql('SELECT CityID,Name FROM tb_city where ProID=?;', [proid],
+                                                      function(transaction, result) {
+                                                      if (result == null || result.rows == null)  return;
+                                                      var ddlCity = document.getElementById("ddlCity");
+                                                      ddlCity.options.length=0;
+                                                      for (var i = 0; i < result.rows.length; i++) {
+                                                   		  var row = result.rows.item(i); 
+                                                   		  ddlCity.options= new Option(row.CityID,row.Name) ;
+                                                      },errorHandler);
+                               },errorHandler,nullHandler);
+           	}
+            //显示默认值
+            function showDbValues(){
+            	if (!vid && typeof(vid)!="undefined" && vid!=0) {
+            			var delBtn = document.getElementById("btnDel");
+            	 		addBtn.style.display = "none";
+								  return;
+						  }
+             
+            	 if (!window.openDatabase) return;
+            	  db.transaction(function(transaction) {
+                               transaction.executeSql('SELECT * FROM tb_village_info;', [],
+                                                      function(transaction, result) {
+                                                      if (result == null || result.rows == null)  return;
+                                                      for (var i = 0; i < result.rows.length; i++) {
+                                                   		  var row = result.rows.item(i); 
+                                                   		  $("#tbName").val(row.Name);
+                                                   		  $("#tbLocation").val(row.Location); 
+          	$("#tbDesc").val(row.Descript);
+          	$("#tbVcName").val(row.Vc_name);
+           	$("#tbSecretaryName").val(row.Secretary_name); 
+						$("#tbVcMobile").val(row.Vc_mobile); 
+						$("#tbSecretaryMobile").val(row.Secretary_mobile);  
+						
+            var proid = row.ProID;
+            var cityId = row.cityId;
+            setProviceSelect(proid);
+            ddlProvince_select_change();
+            setCitySelect(cityId);
+            
+            var Main_village = row.Main_village;
+						
+            var Village_Branch = row.Village_Branch;
+            var Clinic = row.Clinic;
+            setMainVillage(Main_village);
+						setVillageBranch(Village_Branch);
+						setClinic(Clinic);
+						
+						$("#tbVillageCommittee").val(row.Village_committee); 
+						$("#tbVcLocation").val(row.Village_committee_location);  
+						$("#tbHospital").val(row.Hospital); 
+						$("#tbHospitalLocation").val(row.Hospital_location);   
+
+            $("#tbHospitalLocation").val(row.Hospital_location);
+            $("#tbHospitalDistance").val(row.Hospital_distance);
+            $("#tbKindergarten").val(row.Kindergarten);
+            $("#tbKindergartenLocation").val(row.Kindergarten_location);
+            $("#tbKindergartenDistance").val(row.Kindergarten_distance);
+
+            $("#tbPrimarySchool").val(row.PrimarySchool);
+            $("#tbPrimarySchoolLocation").val(row.PrimarySchool_location);
+            $("#tbPrimarySchoolDistance").val(row.PrimarySchool_distance);
+            $("#tbMiddleSchool").val(row.MiddleSchool);
+            $("#tbMiddleSchool").val(row.MiddleSchool_location);
+
+            $("#tbMiddleSchoolDistance").val(row.MiddleSchool_diatance);
+            if (row.isRead=='1'){
+           		 $("#btnAdd").hide();
+           		 $("#btnDel").hide();
+             
+            	}
+                                                      	break;
+                                                      },errorHandler);
+                               },errorHandler,nullHandler);
+            }
+            
+           
+            
+            function DeleteValuesFromDB(){
+            	  db.transaction(function(transaction) {
+                               transaction.executeSql('delete from tb_village_info where Vid=?',[vid]);
+                               });
+                	document.getElementById("tbName").innerHTML= "";
+            			document.getElementById("tbLocation").innerHTML= "";
+            document.getElementById("tbDesc").innerHTML= "";
+            document.getElementById("tbVcName").innerHTML= "";
+            document.getElementById("tbSecretaryName").innerHTML= "";
+
+            document.getElementById("tbVcMobile").innerHTML= "";
+            document.getElementById("tbSecretaryMobile").innerHTML= "";
+         
+           
+            document.getElementById("tbVillageCommittee").innerHTML= "";
+            document.getElementById("tbVcLocation").innerHTML= "";
+            document.getElementById("tbHospital").innerHTML= "";
+
+            document.getElementById("tbHospitalLocation").innerHTML= "";
+            document.getElementById("tbHospitalDistance").innerHTML= "";
+            document.getElementById("tbKindergarten").innerHTML="";
+            document.getElementById("tbKindergartenLocation").innerHTML= "";
+            document.getElementById("tbKindergartenDistance").innerHTML= "";
+
+            document.getElementById("tbPrimarySchool").innerHTML= "";
+            document.getElementById("tbPrimarySchoolLocation").innerHTML="";
+            document.getElementById("tbPrimarySchoolDistance").innerHTML= "";
+            document.getElementById("tbMiddleSchool").innerHTML= "";
+            document.getElementById("tbMiddleSchool").innerHTML= "";
+
+            document.getElementById("tbMiddleSchoolDistance").innerHTML= "";
+             
+            var delBtn = document.getElementById("btnDel");
+            delBtn.style.display = "none";
+            	 
+            }
+            // this is the function that puts values into the database using the
+            // values from the text boxes on the screen
+            function AddValueToDB() {
+                if (!window.openDatabase) {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                
+        
+                
+                // this is the section that actually inserts the values into the User
+                // table
+                 
+                db.transaction(function(transaction) {
+                	   var ddlProvince = document.getElementById("ddlProvince");
+           	         var proid = ddlProvince.options[ddlProvince.selectedIndex].value;
+           	       var name = $('#tbName').val();
+						      if (IsEmpty(name)) 
+						        {
+						            alert('村名称不能为空!');
+						            return;
+						        }
+           	         var ddlCity = document.getElementById("ddlCity"); 
+           	         var cityid = ddlCity.options[ddlCity.selectedIndex].value;
+           	         
+           	         var ddlMainVillage = document.getElementById("ddlMainVillage"); 
+           	         var mv = ddlMainVillage.options[ddlMainVillage.selectedIndex].value;
+           	         
+           	         var ddlVillageBranch = document.getElementById("ddlVillageBranch"); 
+           	         var vb = ddlVillageBranch.options[ddlVillageBranch.selectedIndex].value;
+           	         
+           	         var ddlClinic = document.getElementById("ddlClinic"); 
+           	         var clinic = ddlClinic.options[ddlClinic.selectedIndex].value;
+
+                	 var sb = new StringBuilder();
+									
+                	if (!vid && typeof(vid)!="undefined" && vid!=0) {
+                		
+            sb.append("update tb_village_info set ");
+            sb.append(" Name =?, ");
+            sb.append(" Location =?, ");
+            sb.append(" Descript =?, ");
+            sb.append(" Vc_name =?, ");
+            sb.append(" Secretary_name =?, ");
+            sb.append(" Vc_mobile =?, ");
+            sb.append(" Secretary_mobile =?, ");
+            sb.append(" ProID =?, ");
+            sb.append(" CityID =?, ");
+            sb.append(" Main_village =?, ");
+            sb.append(" Village_Branch =?, ");
+            sb.append(" Clinic =?, ");
+            sb.append(" Village_committee =?, ");
+            sb.append(" Village_committee_location =?, ");
+            sb.append(" Hospital =?, ");
+            sb.append(" Hospital_location =?, ");
+            sb.append(" Hospital_distance =?, ");
+            sb.append(" Kindergarten =?, ");
+            sb.append(" Kindergarten_location =?, ");
+            sb.append(" Kindergarten_distance =?, ");
+            sb.append(" PrimarySchool =?, ");
+            sb.append(" PrimarySchool_location =?, ");
+            sb.append(" PrimarySchool_distance =?, ");
+
+            sb.append(" MiddleSchool =?, ");
+            sb.append(" MiddleSchool_location =?, ");
+
+            sb.append(" MiddleSchool_diatance =?");
+            sb.append(" where Vid =?");
+                               transaction.executeSql(sb.toString(),
+                               [$('#tbName').val(),
+                                $('#tbLocation').val(),
+                                $('#tbDesc').val(),
+                                $('#tbVcName').val(),
+                                $('#tbSecretaryName').val(),
+                                $('#tbVcMobile').val(),
+                                $('#tbSecretaryMobile').val(),
+                                proid ,
+                                cityid,
+                                mv,
+                                vb,
+                                clinic,
+                                $('#tbVillageCommittee').val(),
+                                $('#tbVcLocation').val(),
+                                $('#tbHospital').val(),
+                                $('#tbHospitalLocation').val(),
+                                $('#tbHospitalDistance').val(),
+                                $('#tbKindergarten').val(),
+                                $('#tbKindergartenLocation').val(),
+                                $('#tbKindergartenDistance').val(),
+                                $('#tbPrimarySchool').val(),
+                                $('#tbPrimarySchoolLocation').val(),
+                                $('#tbPrimarySchoolDistance').val(),
+                                $('#tbMiddleSchool').val(),
+                                $('#tbMiddleSchool').val(),
+                                $('#tbMiddleSchoolDistance').val() 
+                                vid,
+                                ],
+                                                      nullHandler,errorHandler);
+                 }
+                   else{
+                   	vid = "v"+createNos();
+                   				  sb.append("insert into tb_village_info(");
+                   				  
+            sb.append("Vid,Name,Location,Descript,Vc_name,Secretary_name,Vc_mobile,Secretary_mobile,ProID,CityID,Main_village,");
+            sb.append("Village_Branch,Clinic,Village_committee,Village_committee_location,Hospital,Hospital_location,");
+            sb.append("Hospital_distance,Kindergarten,Kindergarten_location,");
+            sb.append("Kindergarten_distance,PrimarySchool,PrimarySchool_location,PrimarySchool_distance,MiddleSchool,");
+            sb.append("MiddleSchool_location,MiddleSchool_diatance,isRead ) values(");
+            sb.append("?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0");
+                  Object obj= zf_db.ExecuteRet(sb.ToString());
+                   						  transaction.executeSql(sb.toString(),
+                   						  [
+                   						  vid,
+                   						  $('#tbName').val(),
+                                $('#tbLocation').val(),
+                                $('#tbDesc').val(),
+                                $('#tbVcName').val(),
+                                $('#tbSecretaryName').val(),
+                                $('#tbVcMobile').val(),
+                                $('#tbSecretaryMobile').val(),
+                                proid ,
+                                cityid,
+                                mv,
+                                vb,
+                                clinic,
+                                $('#tbVillageCommittee').val(),
+                                $('#tbVcLocation').val(),
+                                $('#tbHospital').val(),
+                                $('#tbHospitalLocation').val(),
+                                $('#tbHospitalDistance').val(),
+                                $('#tbKindergarten').val(),
+                                $('#tbKindergartenLocation').val(),
+                                $('#tbKindergartenDistance').val(),
+                                $('#tbPrimarySchool').val(),
+                                $('#tbPrimarySchoolLocation').val(),
+                                $('#tbPrimarySchoolDistance').val(),
+                                $('#tbMiddleSchool').val(),
+                                $('#tbMiddleSchool').val(),
+                                $('#tbMiddleSchoolDistance').val() ],
+                                                      nullHandler,errorHandler);
+                                                 
+                               });
+                  }
+               var delBtn = document.getElementById("btnDel");
+            	 addBtn.style.display = "";                
+                               
+                               ListDBValues();
+                               
+                               return false;
+                               
+            }
+            
+            </script>
+<body style="background:none;" onload="onBodyLoad()">
+
+<form action="" method="post">
+<table border="0" cellpadding="10" cellspacing="0" width="95%" align="center">
+<tr>
+    <td align="right" width="50">村落名称</td><td><input  ID="tbName"  type="text" name="" value="" /></td>
+    <td align="right">村落位置</td><td><input ID="tbLocation"   type="text" name="" value="" /></td>
+</tr>
+<tr>
+    <td align="right">村长姓名</td><td><input  ID="tbVcName" type="text" name="" value="" /></td>
+    <td align="right">书记姓名</td><td><input ID="tbSecretaryName" type="text" name="" value="" /></td>
+</tr>
+<tr>
+    <td align="right">村长电话</td><td><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') ID="tbVcMobile" name="" value="" /></td>
+    <td align="right">书记电话</td><td><input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') ID="tbSecretaryMobile" name="" value="" /></td>
+</tr>
+<tr>
+	  <td align="right">所属省份</td><td><select ID="ddlProvince" name="" onChange="ddlProvince_select_change"></select></td>
+    <td align="right">所属城市</td><td><select ID="ddlCity" name=""></select></td>	
+</tr>
+<tr>
+    <td align="right">村落简介</td><td colspan="3"><textarea ID="tbDesc" name=""></textarea></td>
+</tr>
+</table>
+
+<table border="0" cellpadding="10" cellspacing="0" width="95%" align="center">
+<tr>
+    <td >
+    	村主路 <select name=""  ID="ddlMainVillage" >
+    		<Option value="1" selected>柏油</Option>
+    		<Option value="2">水泥</Option>
+    		<Option value="3">其他</Option>
+    		</select>
+        村支路 <select name="" ID="ddlVillageBranch">
+        	   		<Option value="1" selected>水泥</Option>
+    		<Option value="2">砖铺</Option>
+    		<Option value="3">土路</Option>
+    			<Option value="3">其他</Option>
+        	</select>
+        卫生室 <select name="" ID="ddlClinic">
+        	 		<Option value="1" selected>有</Option>
+    					<Option value="0">无</Option>
+        		</select>
+	</td>
+</tr>
+<tr>
+    <td>村活动室（村委会）<input   ID="tbVillageCommittee" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') name="" value="" />个 位于<input ID="tbVcLocation"  type="text" name="" value="" /></td>
+</tr>
+<tr>
+    <td>
+        <input ID="tbHospital" type="text" name="" value="" /> 医院，
+        位于 <input   ID="tbHospitalLocation" type="text" name="" value="" />
+        距本村 <input  ID="tbHospitalDistance"  type="text" name="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') value="" /> 米
+    </td>
+</tr>
+<tr>
+    <td>
+        <input  ID="tbKindergarten" type="text" name="" value="" /> 幼儿园，
+        位于 <input ID="tbKindergartenLocation" type="text" name="" value="" />
+        距本村 <input ID="tbKindergartenDistance" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') type="text" name="" value="" /> 米
+    </td>
+</tr>
+<tr>
+    <td>
+        <input ID="tbPrimarySchool" type="text" name="" value="" /> 小学，
+        位于 <input   ID="tbPrimarySchoolLocation" type="text" name="" value="" />
+        距本村 <input  ID="tbPrimarySchoolDistance" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') type="text" name="" value="" /> 米
+    </td>
+</tr>
+<tr>
+    <td>
+        <input ID="tbMiddleSchool" type="text" name="" value="" /> 中学，
+        位于 <input ID="tbMiddleSchoolLocation" type="text" name="" value="" />
+        距本村 <input  ID="tbMiddleSchoolDistance" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') name="" value="" /> 米
+    </td>
+</tr>
+</table>
+
+<div class="line"></div>
+
+<div class="button-bar">
+	<input type="button" value="保 存" class="action-button h30 lh10"  id="btnAdd" onClick="AddValueToDB()"/>
+    <input type="button" value="删 除" class="action-button h30 lh10" id="btnDel" onClick="DeleteValuesFromDB()"/>
+</div>
+</form>
+
+</body>
+</html>

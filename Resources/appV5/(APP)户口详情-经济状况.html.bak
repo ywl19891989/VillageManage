@@ -1,0 +1,407 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link href="./style.css" rel="stylesheet" type="text/css" />
+<title>社队内容</title>
+<style>
+.where-box { padding:6px 15px; color:#eee; border-radius:5px; display:inline-block; margin:5px; cursor:pointer; background:#3f3f3f; border:1px solid #5f5f5f; }
+.where-box img { display:inline-block; margin-left:50px; }
+.shezhang-name { font-size:36px; font-weight:bold; color:#fff; text-align:center; margin-bottom:20px; margin-top:20px; }
+.shezhang-line { height:1px; background:#111; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 2px 1px #333; width:90%; margin:0px auto 20px auto; }
+.shezhang-phone { color:#fff; font-size:28px; text-align:center; }
+.shezhang-footer { background:#dfdfdf; margin-top:20px; height:60px; line-height:60px; text-indent:20px; font-size:20px; color:#555; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 20px 0px #dfdfdf; }
+.shezhang-footer .num { font-size:26px; }
+</style>
+</head>
+<script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/stringbuilder.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/pagevalidate.js"></script>
+ <script type="text/javascript" charset="utf-8">
+                
+                // global variables
+                var db;
+                var shortName = 'WebSqlDB';
+                var version = '1.0';
+                var displayName = 'WebSqlDB';
+                var maxSize = 65535;
+                var pid=null;//户口id
+                var uid=null;//用户编号  
+                var iid=null;//经济收入编号
+                var sign_path='';
+                
+                function initValues(epid,euid){
+                	pid = epid;
+                	uid = euid;
+              
+                }
+                
+                // this is called when an error happens in a transaction
+                function errorHandler(transaction, error) {
+                    alert('Error: ' + error.message + ' code: ' + error.code);
+                }
+            
+            // this is called when a successful transaction happens
+            function successCallBack() {
+                alert("DEBUGGING: success");
+                
+            }
+            
+            function nullHandler() {
+                
+            }
+            
+            // called when the application loads
+            function onBodyLoad() {
+                
+                // This alert is used to make sure the application is loaded correctly
+                // you can comment this out once you have the application working
+                alert("DEBUGGING: we are in the onBodyLoad() function");
+                
+                if (!window.openDatabase) {
+                    // not all mobile devices support databases  if it does not, the
+                    // following alert will display
+                    // indicating the device will not be albe to run this application
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                
+                // this line tries to open the database base locally on the device
+                // if it does not exist, it will create it and return a database
+                // object stored in variable db
+                db = openDatabase(shortName, version, displayName,maxSize);
+                
+                // this line will try to create the table User in the database just
+                // created/openned
+                var createSql='CREATE TABLE IF NOT EXISTS  tb_income(\
+									Pid varchar(20) NOT NULL PRIMARY KEY,
+									Plantes varchar(128) NULL,
+									Planted varchar(32) NULL,
+									Farmings varchar(128) NULL,
+									Farming varchar(32) NULL,
+									Source_income varchar(64) NULL,
+									Annual_income varchar(20) NULL,
+									Proposed_cost varchar(20 NULL,
+									Sign_path varchar(128) NULL,
+									isRead varchar(2) NOT NULL DEFAULT ('1'))';	//isRead 1表示为只读,即为服务器下载，不允许本地修改
+                db.transaction(function(tx){
+                               tx.executeSql( createSql,
+                               [],nullHandler,errorHandler);
+            	 },errorHandler,successCallBack);
+            
+           	   showDbValues();
+            }
+          
+          
+            //显示默认值
+            function showDbValues(){ 
+            	if (IsEmpty(pid)) {
+								  return;
+						  }
+						  if (!window.openDatabase) return;
+            	  db.transaction(function(transaction) {
+                               transaction.executeSql('SELECT * FROM tb_income where Pid=?;', [pid],dataResult
+                                                     ,errorHandler);
+                               },errorHandler,nullHandler);
+            }
+            
+            function dataResult(transaction, result) {
+                         if (result == null || result.rows == null)  return;
+                         
+                         for (var i = 0; i < result.rows.length; i++) {
+                                      var row = result.rows.item(i); 
+                                      iid = row.Pid;
+                                      $("#tbAnnualInCome").val(row.Annual_income);
+                                      $("#tbProposedCost").val(row.Proposed_cost); 
+           													 
+           														jQuery("#ddlyz").val(row.Farming); 
+           														jQuery("#ddlzz").val(row.Planted);  
+           														//主要收入
+           														var sr_arr  = Source_income.Mail.split(',');
+           														if (sr_arr.length>=4){
+           															if ('1' == sr_arr[0])
+           																  $('#wn').attr("checked", true);
+           															if ('1' == sr_arr[1])
+           																  $('#sm').attr("checked", true);
+           														  if ('1' == sr_arr[2])
+           																  $('#lw').attr("checked", true);
+           															if ('1' == sr_arr[3])
+           																  $('#srother').attr("checked", true);
+           														}
+           														//种植
+           														var zz_arr  = Plantes.Mail.split(',');
+           														if (zz_arr.length>=6){
+           															if ('1' == zz_arr[0])
+           																  $('#zs').attr("checked", true);
+           															if ('1' == zz_arr[1])
+           																  $('#gg').attr("checked", true);
+           														  if ('1' == zz_arr[2])
+           																  $('#sc').attr("checked", true);
+           															if ('1' == zz_arr[3])
+           																  $('#hs').attr("checked", true);
+           															if ('1' == zz_arr[4])
+           																  $('#zcy').attr("checked", true);
+           															if ('1' == zz_arr[5])
+           																  $('#zzother').attr("checked", true);
+           														}
+           															//养植
+           														var yz_arr  = Farmings.Mail.split(',');
+           														if (yz_arr.length>=7){
+           															if ('1' == yz_arr[0])
+           																  $('#ji').attr("checked", true);
+           															if ('1' == yz_arr[1])
+           																  $('#ya').attr("checked", true);
+           														  if ('1' == yz_arr[2])
+           																  $('#yang').attr("checked", true);
+           															if ('1' == yz_arr[3])
+           																  $('#zhu').attr("checked", true);
+           															if ('1' == yz_arr[4])
+           																  $('#niu').attr("checked", true);
+           															if ('1' == yz_arr[5])
+           																  $('#yu').attr("checked", true);
+           															if ('1' == yz_arr[6])
+           																  $('#yzother').attr("checked", true);
+           														}
+													            if (row.isRead=='1'){
+													           		 $("#btnAdd").hide(); 
+													            	}
+                                      break;
+                          }
+                }
+            
+            
+            
+          
+            function AddValueToDB() {
+                if (!window.openDatabase) {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+ 
+                db.transaction(function(transaction) {
+            
+				     		var sb = new StringBuilder();
+									 
+           			//主要收入
+           			var sr_arr="";
+           													if ($("#wn").attr("checked"))
+           															sr_arr+="1,";
+           													else
+           														  sr_arr+="0,";
+           													if ($("#sm").attr("checked"))
+           															sr_arr+="1,";
+           													else
+           														  sr_arr+="0,";
+           													if ($("#lw").attr("checked"))
+           															sr_arr+="1,";
+           													else
+           														  sr_arr+="0,";
+           													if ($("#srother").attr("checked"))
+           															sr_arr+="1";
+           													else
+           														  sr_arr+="0";
+           														
+           															 
+           														 
+           														//种植
+           													var zz_arr  = "";
+           													if ($("#zs").attr("checked"))
+           															zz_arr+="1,";
+           													else
+           														  zz_arr+="0,";
+           													if ($("#gg").attr("checked"))
+           															zz_arr+="1,";
+           													else
+           														  zz_arr+="0,";
+           													if ($("#sc").attr("checked"))
+           															zz_arr+="1,";
+           													else
+           														  zz_arr+="0,";
+           													if ($("#hs").attr("checked"))
+           															zz_arr+="1";
+           													else
+           														  zz_arr+="0";
+           													if ($("#zcy").attr("checked"))
+           															zz_arr+="1,";
+           													else
+           														  zz_arr+="0,";
+           													if ($("#zzother").attr("checked"))
+           															zz_arr+="1";
+           													else
+           														  zz_arr+="0";	  
+        
+           													//养植
+           													var yz_arr  = "";
+           													if ($("#ji").attr("checked"))
+           															yz_arr+="1,";
+           													else
+           														  yz_arr+="0,";
+           													if ($("#ya").attr("checked"))
+           															yz_arr+="1,";
+           													else
+           														  yz_arr+="0,";
+           													if ($("#yang").attr("checked"))
+           															yz_arr+="1,";
+           													else
+           														  yz_arr+="0,";
+           													if ($("#zhu").attr("checked"))
+           															yz_arr+="1";
+           													else
+           														  yz_arr+="0";
+           													if ($("#niu").attr("checked"))
+           															yz_arr+="1,";
+           													else
+           														  yz_arr+="0,";
+           													if ($("#yu").attr("checked"))
+           															yz_arr+="1";
+           													else
+           														  yz_arr+="0";	
+           													if ($("#yzother").attr("checked"))
+           															yz_arr+="1";
+           													else
+           														  yz_arr+="0";	  
+           														 
+						
+                if (IsEmpty(iid)) { 
+                   		sb.append("insert into tb_income(Pid,Plantes,Planted,Farmings,Farming,Source_income,Annual_income");    				  
+					            sb.append("Proposed_cost,Sign_path,isRead) values(");
+					            sb.append("?,?,?,?,?,?,?,?,?,?,0");
+                 		 Object obj= zf_db.ExecuteRet(sb.ToString());
+                   						  transaction.executeSql(sb.toString(),
+                   						  [
+                   						  pid, 
+                                zz_arr,
+                                $('#ddlzz').val(),
+                                yz_arr,
+                                $('#ddlyz').val(),
+                                sr_arr,
+                                $('#tbAnnualInCome').val(),
+                                $('#tbProposedCost').val(),
+                                sign_path
+                              		 ],
+                                                      nullHandler,errorHandler);
+                                                 
+                               });
+                }
+                else{ 		
+									            sb.append("update tb_income set ");
+									            sb.append(" Plantes =?, ");
+									            sb.append(" Planted =?, ");
+									            sb.append(" Farmings =?, ");
+									            sb.append(" Farming =?, ");
+									            sb.append(" Source_income =?, ");
+									            sb.append(" Annual_income =?, ");
+									            sb.append(" Proposed_cost =?, "); 
+									            sb.append(" where Pid =?");
+                               transaction.executeSql(sb.toString(),
+                               [zz_arr,
+                                $('#ddlzz').val(),
+                                yz_arr,
+                                $('#ddlyz').val(),
+                                sr_arr,
+                                $('#tbAnnualInCome').val(),
+                                $('#tbProposedCost').val(),
+                                pid
+                                ],nullHandler,errorHandler);
+                 }           
+                 return false;               
+            }
+           
+            	
+            //进入签名界面
+            function showSign(){
+            	}
+            
+            </script>
+<body style="background:none;" onload="onBodyLoad()">
+
+ <form>
+		<table width="95%" align="center" cellpadding="5" cellspacing="1" class="mb10 form-edit2" >
+        <tr>
+        	<td width="100" align="right">家庭种植</td>
+            <td>
+            	<label><input id="zs" type="checkbox" name="" /> 主食</label>
+                <label><input id="gg" type="checkbox" name="" /> 瓜果</label>
+                <label><input id="sc" type="checkbox" name="" /> 蔬菜</label>
+                <label><input id="hs" type="checkbox" name="" /> 花、树</label>
+                <label><input id="zcy" type="checkbox" name="" /> 中草药</label>
+                <label><input id="zzother" type="checkbox" name="" /> 其他</label>
+            </td>
+        </tr>
+        <tr>
+        	<td align="right">家庭养殖</td>
+            <td>
+            	<label><input id="ji" type="checkbox" name="" /> 鸡&nbsp&nbsp </label>
+                <label><input id="ya" type="checkbox" name="" /> 鸭&nbsp&nbsp </label>
+                <label><input id="yang" type="checkbox" name="" /> 羊 &nbsp&nbsp </label>
+                <label><input id="zhu" type="checkbox" name="" /> 猪 &nbsp&nbsp</label>
+                <label><input id="yu" type="checkbox" name="" /> 鱼 &nbsp&nbsp&nbsp&nbsp </label>
+                <label><input id="niu" type="checkbox" name="" /> 牛&nbsp&nbsp&nbsp&nbsp  </label>
+                <label><input id="yzother" type="checkbox" name="" /> 其他</label>
+            </td>
+        </tr>
+        <tr>
+        	<td align="right">家庭收入主要来源</td>
+            <td>
+            	<label><input id="wn" type="checkbox" name="" /> 务农</label>
+                <label><input id="sm" type="checkbox" name="" /> 商贸</label>
+                <label><input id="lw" type="checkbox" name="" /> 劳务</label>
+                <label><input id="srother" type="checkbox" name="" /> 其他</label>
+            </td>
+        </tr>
+        <tr>
+        	<td align="right">主要种植</td>
+            <td>
+            	<select name="" id="ddlzz">
+                <option>主食</option>
+                 <option>瓜果</option>
+                  <option>蔬菜</option>
+                   <option>花、树</option>
+                    <option>中草药</option>
+                    <option>其他</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+        	<td align="right">主要养殖</td>
+            <td>
+            	<select name="" id="ddlyz">
+                <option>鸡</option>
+                <option>鸭</option>
+                <option>羊</option>
+                 <option>猪</option>
+                    <option>鱼</option>
+                     <option>牛</option>
+                    <option>其他</option>
+                </select>
+            </td>
+        </tr>
+		<tr>
+        	<td align="right">户年收入</td>
+            <td>
+				<input type="text" name="" id="tbAnnualInCome"/> 万元
+            </td>
+        </tr>
+		<tr>
+        	<td align="right">拟建费用</td>
+            <td>
+				<input type="text" name="" id="tbProposedCost" /> 万元
+            </td>
+        </tr>
+        <tr>
+        	<td align="right">&nbsp;</td>
+        		<td><input type="button" value="保 存" class="action-button h30 lh10" onClick="AddValueToDB()"/></td>
+            <td><input type="button" value="签 名" class="action-button h30 lh10" onClick="showSign()"/></td>
+        </tr>
+        </table>
+        </form>
+   
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link href="./style.css" rel="stylesheet" type="text/css" />
+<title>户口详情</title>
+</head>
+<script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/stringbuilder.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/pagevalidate.js"></script>
+<script type="text/javascript" charset="utf-8">
+                
+                //全局变量
+                var db;
+                var shortName = 'WebSqlDB';
+                var version = '1.0';
+                var displayName = 'WebSqlDB';
+                var maxSize = 65535;
+                var pid=null;//户主id
+                var uid=null;//用户编号 
+                var uname=null;//用户姓名
+                var cid=null;//社队id
+                function initValues(epid,euid,ename,ecid){
+                	pid = epid;
+                	uid = euid;
+                	uname = ename;
+                	cid=ecid;
+                }
+                
+                // this is called when an error happens in a transaction
+                function errorHandler(transaction, error) {
+                    alert('Error: ' + error.message + ' code: ' + error.code);
+                }
+            
+            // this is called when a successful transaction happens
+            function successCallBack() {
+                alert("DEBUGGING: success");
+            }
+            
+            function nullHandler() {
+                
+            }
+            
+            function onBodyLoad() {
+                if (!window.openDatabase) {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                db = openDatabase(shortName, version, displayName,maxSize);
+                var createSql='CREATE TABLE IF NOT EXISTS  tb_peopler_main_info(\
+										Pid  varchar(20) NOT NULL PRIMARY KEY,
+										Cid varchar(20) NULL,
+										PMainSurname varchar(64) NULL,
+										PMainTheName varchar(128) NULL,
+										Mobile varchar(16) NULL,
+										PersonNum INTEGER NULL,
+										RoomNum INTEGER NULL,
+										YearAllIncome varchar(11) NULL, 
+										HomeCarNum INTEGER NULL,
+										VehiclesNum INTEGER NULL,
+										MobileType varchar(16) NULL,
+										isRelative varchar(4) NULL,
+										Memo  Text NULL,
+										Creater varchar(64) NULL,
+										isRead varchar(2) NOT NULL DEFAULT ('1'))'; 
+									//isRead 1表示为只读,即为服务器下载，不允许本地修改
+										
+		                db.transaction(function(tx){
+		                               tx.executeSql( createSql,
+		                               [],nullHandler,errorHandler);
+		            	 },errorHandler,successCallBack);
+            
+           	   showDbValues();
+            }
+          
+          
+            //显示默认值
+            function showDbValues(){ 
+            	if (IsEmpty(pid)) {
+            			$('#btnDel').hide();
+								  return;
+						  }
+						  if (!window.openDatabase) return;
+            	  db.transaction(function(transaction) {
+                               transaction.executeSql('SELECT * FROM tb_peopler_main_info where Pid=?;', [pid],dataResult
+                                                     ,errorHandler);
+                               },errorHandler,nullHandler);
+            }
+            
+            function dataResult(transaction, result) {
+                         if (result == null || result.rows == null)  return;
+                         for (var i = 0; i < result.rows.length; i++) {
+                                      var row = result.rows.item(i); 
+                                      $("#tbPMainSurname").val(row.PMainSurname);
+                                      $("#tbPMainTheName").val(row.PMainTheName); 
+           												
+           														jQuery("#ddlMobileType").val(row.MobileType); 
+           														jQuery("#ddlRelative").val(row.isRelative);  
+           														$("#tbMobile").val(row.Mobile); 
+           														$("#tbHomeCarNum").val(row.HomeCarNum);
+           														$("#tbPersonNum").val(row.PersonNum); 
+           														$("#tbVehiclesNum").val(row.VehiclesNum);
+           														$("#tbMemo").val(row.Memo);
+													            if (row.isRead=='1'){
+													           		 $("#btnAdd").hide();
+													           		 $("#btnDel").hide();
+													            }
+                                      break;
+                          }
+                }
+            
+            
+            
+            function DeleteValuesFromDB(){
+					            	  db.transaction(function(transaction) {
+					                               transaction.executeSql('delete from tb_peopler_main_info where Pid=?',[pid]);
+					                               });
+                	 										$("#tbPMainSurname").val("");
+                                      $("#tbPMainTheName").val("");  
+           												    $("#tbMobile").val(""); 
+           														$("#tbHomeCarNum").val("");
+           														$("#tbPersonNum").val(""); 
+           														$("#tbVehiclesNum").val("");
+           														$("#tbMemo").val("");
+          													  $("#btnDel").hide();
+            	 
+            }
+            
+            function AddValueToDB() {
+                if (!window.openDatabase) {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+ 
+                db.transaction(function(transaction) {
+                	
+                if (IsEmpty($("#tbPMainSurname").val()))
+				        {
+				            alert("户主姓不能为空!");
+				            return;
+				        }
+				        if (IsEmpty($("#tbPMainTheName").val()))
+				        {
+				            alert("户主名不能为空!");
+				            return;
+				        }
+				        if (jQuery("#ddlMobileType").val() == '有' && IsEmpty($("#tbMobile").val()))
+				        {
+				            alert("请输入手机号码!");
+				            return;
+				        }
+				        if (!IsEmpty($("#tbMobile").val()) && !IsMobile($("#tbMobile").val()))
+				       			 alert("手机号码格式错误!");
+				             return;
+				        }
+				        if (IsEmpty($("#tbHomeCarNum").val()))
+				       			 alert("家用车数量不能为空，无可填0!");
+				             return;
+				        }
+				        if (IsEmpty($("#tbVehiclesNum").val()))
+				       			 alert("农用车数量不能为空，无可填0!");
+				             return;
+				        }
+				     		var sb = new StringBuilder();
+									
+								 
+                if (IsEmpty(pid)) {
+                			pid = "p"+createNos();
+                   		sb.append("insert into tb_peopler_main_info(Pid,CId,PMainSurname,PMainTheName,Mobile,");    				  
+					            sb.append("HomeCarNum,VehiclesNum,MobileType,isRelative,PersonNum,Creater,Memo,isRead) values(");
+					            sb.append("?,?,?,?,?,?,?,?,?,?,?,?,0");
+                 		 Object obj= zf_db.ExecuteRet(sb.ToString());
+                   						  transaction.executeSql(sb.toString(),
+                   						  [
+                   						  pid,
+                   						  cid,
+                                $('#tbPMainSurname').val(),
+                                $('#tbPMainTheName').val(),
+                                $('#tbMobile').val(),
+                                $('#tbHomeCarNum').val(),
+                                $('#tbVehiclesNum').val(),
+                                $('#ddlMobileType').val(),
+                                $('#ddlRelative').val(),
+                                $('#tbPersonNum').val(),
+                                uname,
+                                $('#tbMemo').val()
+                              		 ],
+                                                      nullHandler,errorHandler);
+                                                 
+                               });
+                }
+                else{ 		
+									            sb.append("update tb_peopler_main_info set ");
+									            sb.append(" PMainSurname =?, ");
+									            sb.append(" PMainTheName =?, ");
+									            sb.append(" Mobile =?, ");
+									            sb.append(" HomeCarNum =?, ");
+									            sb.append(" VehiclesNum =?, ");
+									            sb.append(" MobileType =?, ");
+									            sb.append(" isRelative =?, ");
+									            sb.append(" PersonNum =?, ");
+									            sb.append(" Memo =? ");
+									            sb.append(" where Pid =?");
+                               transaction.executeSql(sb.toString(),
+                               [$('#tbPMainSurname').val(),
+                                $('#tbPMainTheName').val(),
+                                $('#tbMobile').val(),
+                                $('#tbHomeCarNum').val(),
+                                $('#tbVehiclesNum').val(),
+                                $('#ddlMobileType').val(),
+                                $('#ddlRelative').val(),
+                                $('#tbPersonNum').val(),
+                                 $('#tbMemo').val(),
+                                pid
+                                ],nullHandler,errorHandler);
+                 }  
+            		 $('#btnDel').show();         
+                 ListDBValues();
+                 return false;
+                               
+            }
+            
+            function ListDbValues(){
+            	}
+            </script> 
+<body style="background:none;" onload="onBodyLoad()">
+
+<form action="">
+<table border="0" cellpadding="0" cellspacing="0" width="95%" align="center">
+<tr><td>
+<table border="0" cellpadding="2" cellspacing="0" width="75%" align="center">
+	
+<tr>
+    <td align="right">户主姓</td><td><input type="text" ID="tbPMainSurname" name="" value="" /></td>
+    <td align="right">户主名</td><td><input type="text" ID="tbPMainTheName" name="" value="" /></td>
+</tr>
+<tr>
+    <td align="right">户主电话</td><td><input ID="tbMobile" type="text" name="" value=""  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+    <td align="right">家车数量</td><td><input ID="tbHomeCarNum" type="text" name="" value=""  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+</tr>
+<tr>
+    <td align="right">手机类型</td><td>
+    	<select name=""  ID="ddlMobileType" >
+    		<Option value="非智能手机" selected>非智能手机</Option>
+    		<Option value="智能手机">智能手机</Option>
+    		<Option value="无手机">无手机</Option>
+    		</select>
+    		</td>
+  
+    <td align="right">村内亲属</td><td>
+    	<select name=""  ID="ddlRelative" >
+    		<Option value="有" selected>有</Option> 
+    		<Option value="无">无</Option>
+    		</select>
+    	</td>
+</tr>
+
+<tr>
+    <td align="right">户口人数</td><td><input  ID="tbPersonNum" type="text" name="" value=""  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+    <td align="right">农车数量</td><td><input ID="tbVehiclesNum" type="text" name="" value=""  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+</tr>
+</table>
+</td>
+ 
+<td align="right">备注</td><td><textarea ID="tbMemo"  name=""></textarea></td>
+</tr>
+    </table>
+   
+<div class="line"></div>
+<div class="button-bar">
+	<input type="button" value="提 交" class="action-button h30 lh10" onClick="AddValueToDB()"/>
+    <input type="button" value="删 除" class="action-button h30 lh10" onClick="DeleteValuesFromDB()"/>
+</div>
+</form>
+
+</body>
+</html>

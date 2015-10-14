@@ -1,0 +1,339 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link href="./style.css" rel="stylesheet" type="text/css" />
+<title>社队内容</title>
+<style>
+.where-box { padding:6px 15px; color:#eee; border-radius:5px; display:inline-block; margin:5px; cursor:pointer; background:#3f3f3f; border:1px solid #5f5f5f; }
+.where-box img { display:inline-block; margin-left:50px; }
+.shezhang-name { font-size:36px; font-weight:bold; color:#fff; text-align:center; margin-bottom:20px; margin-top:20px; }
+.shezhang-line { height:1px; background:#111; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 2px 1px #333; width:90%; margin:0px auto 20px auto; }
+.shezhang-phone { color:#fff; font-size:28px; text-align:center; }
+.shezhang-footer { background:#dfdfdf; margin-top:20px; height:60px; line-height:60px; text-indent:20px; font-size:20px; color:#555; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 20px 0px #dfdfdf; }
+.shezhang-footer .num { font-size:26px; }
+</style>
+</head>
+<script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/stringbuilder.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/pagevalidate.js"></script>
+ <script type="text/javascript" charset="utf-8">
+                
+                // global variables
+                var db;
+                var shortName = 'WebSqlDB';
+                var version = '1.0';
+                var displayName = 'WebSqlDB';
+                var maxSize = 65535;
+                var vid=null;//村落id
+                var uid=null;//用户编号
+                var vname=null;//村落名称
+                var cid=null;//社队id
+                function initValues(evid,euid,evname,ecid){
+                	vid = evid;
+                	uid = euid;
+                	vname = evname;
+                	cid=ecid;
+                }
+                
+                // this is called when an error happens in a transaction
+                function errorHandler(transaction, error) {
+                    alert('Error: ' + error.message + ' code: ' + error.code);
+                }
+            
+            // this is called when a successful transaction happens
+            function successCallBack() {
+                alert("DEBUGGING: success");
+                
+            }
+            
+            function nullHandler() {
+                
+            }
+            
+            // called when the application loads
+            function onBodyLoad() {
+                
+                // This alert is used to make sure the application is loaded correctly
+                // you can comment this out once you have the application working
+                alert("DEBUGGING: we are in the onBodyLoad() function");
+                
+                if (!window.openDatabase) {
+                    // not all mobile devices support databases  if it does not, the
+                    // following alert will display
+                    // indicating the device will not be albe to run this application
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                
+                // this line tries to open the database base locally on the device
+                // if it does not exist, it will create it and return a database
+                // object stored in variable db
+                db = openDatabase(shortName, version, displayName,maxSize);
+                
+                // this line will try to create the table User in the database just
+                // created/openned
+                var createSql='CREATE TABLE IF NOT EXISTS  tb_communes_info(\
+										Cid varchar(20) NOT NULL PRIMARY KEY,
+										Vid varchar(20) NULL,
+										CommunesName varchar(128) NULL,
+										Communeser varchar(128) NULL,
+										CommunesPhone varchar(16) NULL,
+										ReferenceCompoundNum varchar(10) NULL,
+										IsWater varchar(4) NULL DEFAULT ('无'),
+										IsPower varchar(4) NULL DEFAULT ('无'),
+										IsWastewaterDischarge varchar(4) NULL DEFAULT ('无'),
+										IsNetwork varchar(4) NULL DEFAULT ('无'),
+										Mail varchar(128) NULL,
+										Mid varchar(4) NULL,  
+										MapUrl varchar(128) NULL,
+										isRead varchar(2) NOT NULL DEFAULT ('1'))';	//isRead 1表示为只读,即为服务器下载，不允许本地修改
+                db.transaction(function(tx){
+                               tx.executeSql( createSql,
+                               [],nullHandler,errorHandler);
+            	 },errorHandler,successCallBack);
+            
+           	   showDbValues();
+            }
+          
+          
+            //显示默认值
+            function showDbValues(){
+            	$('#tbVName').val(vname);
+            	if (IsEmpty(cid)) {
+            			$('#btnDel').hide();
+								  return;
+						  }
+						  if (!window.openDatabase) return;
+            	  db.transaction(function(transaction) {
+                               transaction.executeSql('SELECT * FROM tb_communes_info where Cid=?;', [cid],dataResult
+                                                     ,errorHandler);
+                               },errorHandler,nullHandler);
+            }
+            
+            function dataResult(transaction, result) {
+                         if (result == null || result.rows == null)  return;
+                         for (var i = 0; i < result.rows.length; i++) {
+                                      var row = result.rows.item(i); 
+                                      $("#tbCommunesName").val(row.CommunesName);
+                                      $("#tbFloorNum").val(row.ReferenceCompoundNum); 
+           														$("#tbCommuner").val(row.Communeser); 
+           														$("#tbMobile").val(row.CommunesPhone);
+           														jQuery("#ddlWater").val(row.IsWater); 
+           														jQuery("#ddlPower").val(row.IsPower); 
+           														jQuery("#ddlNet").val(row.IsNetwork); 
+           														jQuery("#ddlWsPf").val(row.IsWastewaterDischarge); 
+           														var object_arr  = row.Mail.split(',');
+           														if (object_arr.length>=4){
+           															if ('1' == object_arr[0])
+           																  $('#kuaidi').attr("checked", true);
+           															if ('1' == object_arr[1])
+           																  $('#youju').attr("checked", true);
+           														  if ('1' == object_arr[1])
+           																  $('#other').attr("checked", true);
+           															if ('1' == object_arr[1])
+           																  $('#wu').attr("checked", true);
+           														}
+													            if (row.isRead=='1'){
+													           		 $("#btnAdd").hide();
+													           		 $("#btnDel").hide();
+													            	}
+                                      break;
+                          }
+                }
+            
+            
+            
+            function DeleteValuesFromDB(){
+					            	  db.transaction(function(transaction) {
+					                               transaction.executeSql('delete from tb_communes_info where Cid=?',[cid]);
+					                               });
+                	 										$("#tbCommunesName").val("");
+                                      $("#tbFloorNum").val(""); 
+           														$("#tbCommuner").val(""); 
+           														$("#tbMobile").val("");
+           												   	$('#kuaidi').attr("checked", false);
+	           												  $('#youju').attr("checked", false);
+	           												  $('#other').attr("checked", false);
+	           												  $('#wu').attr("checked", false);
+           													 
+          													 $("#btnDel").hide();
+            	 
+            }
+            // this is the function that puts values into the database using the
+            // values from the text boxes on the screen
+            function AddValueToDB() {
+                if (!window.openDatabase) {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+ 
+                db.transaction(function(transaction) {
+                	
+                if (IsEmpty($("#tbCommunesName").val()))
+				        {
+				            alert("请先输入社队名称!");
+				            return;
+				        }
+				        if (IsEmpty($("#tbCommuner").val()))
+				        {
+				            alert("请先输入社长名称!");
+				            return;
+				        }
+				        if (IsEmpty($("#tbMobile").val()))
+				        {
+				            alert("请先输入社长手机号码!");
+				            return;
+				        }
+				        if (IsEmpty($("#tbFloorNum").val()))
+				        {
+				            alert("请先输入参考院落数量!");
+				            return;
+				        }
+				     		var sb = new StringBuilder();
+									
+								var mail ;
+								if ($("#kuaidi").attr("checked"))
+									mail +="1,";
+								else
+									mail +="0,";
+								if ($("#youju").attr("checked"))
+									mail +="1,";
+								else
+									mail +="0,";
+								if ($("#other").attr("checked"))
+									mail +="1,";
+								else
+									mail +="0,";
+								if ($("#wu").attr("checked"))
+									mail +="1";
+								else
+									mail +="0";
+                if (IsEmpty(cid)) {
+                			cid = "c"+createNos();
+                   		sb.append("insert into tb_communes_info(Vid,Cid,CommunesName,Communeser,CommunesPhone,ReferenceCompoundNum,IsWater");    				  
+					            sb.append("IsPower,IsWastewaterDischarge,IsNetwork,Mail,isRead) values(");
+					            sb.append("?,?,?,?,?,?,?,?,?,?,?,0");
+                 		 Object obj= zf_db.ExecuteRet(sb.ToString());
+                   						  transaction.executeSql(sb.toString(),
+                   						  [
+                   						  vid,
+                   						  cid,
+                                $('#tbCommunesName').val(),
+                                $('#tbCommuner').val(),
+                                $('#tbMobile').val(),
+                                $('#tbFloorNum').val(),
+                                $('#ddlWater').val(),
+                                $('#ddlPower').val(),
+                                $('#ddlWsPf').val(),
+                                $('#ddlNet').val(),
+                                mail
+                              		 ],
+                                                      nullHandler,errorHandler);
+                                                 
+                               });
+                }
+                else{ 		
+									            sb.append("update tb_communes_info set ");
+									            sb.append(" CommunesName =?, ");
+									            sb.append(" Communeser =?, ");
+									            sb.append(" CommunesPhone =?, ");
+									            sb.append(" ReferenceCompoundNum =?, ");
+									            sb.append(" IsWater =?, ");
+									            sb.append(" IsPower =?, ");
+									            sb.append(" IsWastewaterDischarge =?, ");
+									            sb.append(" IsNetwork =?, ");
+									            sb.append(" Mail =? ");
+									            sb.append(" where Cid =?");
+                               transaction.executeSql(sb.toString(),
+                               [$('#tbCommunesName').val(),
+                                $('#tbCommuner').val(),
+                                $('#tbMobile').val(),
+                                $('#tbFloorNum').val(),
+                                $('#ddlWater').val(),
+                                $('#ddlPower').val(),
+                                $('#ddlWsPf').val(),
+                                $('#ddlNet').val(),
+                                mail
+                                cid,
+                                ],nullHandler,errorHandler);
+                 }  
+            		 $('#btnDel').show();         
+                 ListDBValues();
+                 return false;
+                               
+            }
+            
+            function ListDbValues(){
+            	}
+            
+            function showCommunesPic(){
+            	}
+            
+            </script>
+<body style="background:none;" onload="onBodyLoad()">
+
+<div>
+	<table>
+		<tr>
+		 
+			<td align="right">村落名称
+</td><td><input ID="tbVName"  type="text" name="" value="" readonly="true" /></td>
+	  <td align="right"> </td><td> </td>
+	</tr>
+		<tr>
+			 <td align="right">社队名称</td><td><input ID="tbCommunesName"  type="text" name="" value="" /></td>
+	  <td align="right">参考院落数</td><td><input ID="tbFloorNum"   type="text" name="" value="" /></td>
+	</tr>
+		<tr>
+		 
+			 <td align="right">社长姓名</td><td><input  ID="tbCommuner" type="text" name="" value="" /></td>
+	  <td align="right">社长联系方式</td><td><input ID="tbMobile"  type="text" name="" value="" /></td>
+	</tr>
+		
+	<table>
+
+	<div class="where-box">自来水<select name=""  ID="ddlWater" >
+    		<Option value="有" selected>有</Option>
+    		<Option value="无">无</Option> 
+    		</select></div>
+    <div class="where-box">供电<select name=""  ID="ddlPower" >
+    		<Option value="有" selected>有</Option>
+    		<Option value="无">无</Option> 
+    		</select></div>
+    <div class="where-box">网络<select name=""  ID="ddlNet" >
+    		<Option value="有" selected>有</Option>
+    		<Option value="无">无</Option> 
+    		</select></div>
+    <div class="where-box">污水排放<select name=""  ID="ddlWsPf" >
+    		<Option value="有" selected>有</Option>
+    		<Option value="无">无</Option> 
+    		</select></div>
+    <div class="where-box">
+    	<form action="" method="get"> 
+    		
+邮寄方式 
+<label><input name="kuaidi" type="checkbox" value="" />快递 </label> 
+<label><input name="youju" type="checkbox" value="" />邮局 </label> 
+<label><input name="other" type="checkbox" value="" />其他 </label> 
+<label><input name="wu" type="checkbox" value="" />无 </label> 
+</form> </div>
+    <div class="where-box">社队照片<img src="image/where_image_button.png" width="20" height="20" align="absmiddle"  onClick="showCommunesPic()"/></div>
+
+</div>
+<div class="line"></div>
+
+<div class="button-bar">
+	<input type="button" value="保 存" class="action-button h30 lh10"  id="btnAdd" onClick="AddValueToDB()"/>
+    <input type="button" value="删 除" class="action-button h30 lh10" id="btnDel" onClick="DeleteValuesFromDB()"/>
+</div>
+        
+</body>
+</html>

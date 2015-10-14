@@ -1,0 +1,171 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link href="./style.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery.1.8.3.min.js"></script>
+<script src="js/common.js"></script>
+<title>社队户口列表</title>
+<style type="text/css"> 
+.table-tr-title{ 
+height: 26px; 
+font-size: 12px; 
+text-align: center; 
+} 
+.table-tr-content{ 
+height: 18px; 
+background: #FFFFFF; 
+text-align: center; 
+font-size: 12px; 
+} 
+.normalEvenTD{ 
+background: #DFD8D8; 
+} 
+.normalOddTD{ 
+background: #FFFFFF; 
+} 
+.hoverTD{ 
+background-color: #eafcd5; 
+height: 18px; 
+text-align: center; 
+font-size: 12px; 
+} 
+.trSelected{ 
+background-color: #51b2f6; 
+height: 18px; 
+text-align: center; 
+font-size: 12px; 
+} 
+</style> 
+</head>
+<script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/stringbuilder.js"></script>
+<script type="text/javascript" charset="utf-8"  src="js/pagevalidate.js"></script>
+ 
+ <script type="text/javascript" charset="utf-8">
+                
+                // global variables
+                var db;
+                var shortName = 'WebSqlDB';
+                var version = '1.0';
+                var displayName = 'WebSqlDB';
+                var maxSize = 65535;
+              	var cid = null;//社区id  
+            function initData(evid){
+            		cid = evid;
+            	}
+                 // called when the application loads
+            function onBodyLoad() {
+                
+                // This alert is used to make sure the application is loaded correctly
+                // you can comment this out once you have the application working
+                alert("DEBUGGING: we are in the onBodyLoad() function");
+                
+                if (!window.openDatabase) {
+                    // not all mobile devices support databases  if it does not, the
+                    // following alert will display
+                    // indicating the device will not be albe to run this application
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                
+                // this line tries to open the database base locally on the device
+                // if it does not exist, it will create it and return a database
+                // object stored in variable db
+                db = openDatabase(shortName, version, displayName,maxSize);
+                
+                // this line will try to create the table User in the database just
+                // created/openned
+             var createSql='CREATE TABLE IF NOT EXISTS  tb_peopler_main_info(\
+										Pid  varchar(20) NOT NULL PRIMARY KEY,
+										Cid varchar(20) NULL,
+										PMainSurname varchar(64) NULL,
+										PMainTheName varchar(128) NULL,
+										Mobile varchar(16) NULL,
+										PersonNum INTEGER NULL,
+										RoomNum INTEGER NULL,
+										YearAllIncome varchar(11) NULL, 
+										HomeCarNum INTEGER NULL,
+										VehiclesNum INTEGER NULL,
+										MobileType varchar(16) NULL,
+										isRelative varchar(4) NULL,
+										Memo  Text NULL,
+										Creater varchar(64) NULL,
+										isRead varchar(2) NOT NULL DEFAULT ('1'))'; 
+									//isRead 1表示为只读,即为服务器下载，不允许本地修改
+                db.transaction(function(tx){
+                            
+                               tx.executeSql( createSql,
+                               [],nullHandler,errorHandler);
+            	 },errorHandler,successCallBack);
+            	 if (null==cid)return;
+           	   showDbValues();
+            }
+            function showDbValues(){
+            	    		 db.transaction(function(transaction) {
+                               transaction.executeSql('select * from tb_peopler_main_info \
+                                 where Cid=?;', [cid],
+                                                   dataHandler,errorHandler);
+                               });
+            	}
+            	
+          function dataHandler(transaction, result) 
+          {
+             if (result == null || result.rows == null)  return; 
+             for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i); 
+                        addRow(row);
+                      }
+             setRowEvent();                           		  
+           }
+           //获取社队id
+           $('#tbl tr').click(function(){
+							var id = $(this).attr('data-id');
+							 
+						});
+						         
+          function addRow(row){
+	          var html = '<tr class="table-tr-content" data-id='+row.Pid+'>';
+				    html += '<td>' + row.PMainSurname + '</td>';
+				    html += '<td>' + row.PMainTheName + '</td>';
+				    html += '<td>' + row.Mobile + '</td>';
+				    html += '<td>' + row.PersonNum + '</td>';
+				    html += '<td>' + row.Creater + '</td>';
+				    html += '<td>' + row.Memo + '</td>';
+				    html += '</tr>';
+				
+				    $('#tbl').append(html);
+
+				
+          }
+          
+         
+          	
+ </script>           
+<body onload="onBodyLoad()">
+<div class="main">
+<div class="right-body" id="J_right_body">
+    	<div class="box">   
+<table id="tbl" width="95%" align="center" cellpadding="5" cellspacing="0" border="1" class="table-list mb10">
+	<tr>
+    	  <th>户主姓</th>
+        <th>户主名</th>
+        <th>联系电话</th>
+        <th>户人数</th>
+        <th>调研人姓名</th>
+        <th>备注</th>
+    </tr>
+    
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>

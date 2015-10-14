@@ -1,0 +1,64 @@
+/* CSS Document */
+
+body { font-size:12px; margin:0px; padding:0px; background:url(image/body_bg.png) repeat; }
+input[type="submit"],input[type="button"] { cursor:pointer; }
+input[type="text"] { min-width:100px; height:24px; font-size:14px; padding:3px; }
+textarea { width:300px; height:100px; }
+label { margin-right:20px; }
+
+.navigation { background:red; height:44px; background:url(image/nav_bg.png) repeat-x; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 1px 1px #333; position:relative; }
+.navigation .title { heigth:44px; line-height:44px; font-size:18px; color:#fff; width:50%; text-align:center; font-weight:bold; position:absolute; left:25%; top:0px; }
+.navigation .back-button { position:absolute; top:10px; left:25px; }
+
+.main { height:auto; min-height:400px; }
+
+.main .left-menu { width:150px; min-height:400px; float:left; }
+.main .left-menu ul { list-style:none; padding:0px; margin:0px; padding-top:30px; }
+.main .left-menu ul li { padding-left:10px; margin-top:7px; }
+.main .left-menu ul li a { width:120px; height:36px; padding-left:5px; display:inline-block; border:none; background:url(image/left_menu_background_0.png) no-repeat; color:#fff; font-weight:bold; text-decoration:none; font-size:12px; line-height:36px; }
+.main .left-menu ul li a:hover { width:130px; background:url(image/left_menu_background_1.png) no-repeat; }
+.main .left-menu ul li a img,.main .left-menu ul li .current img { width:20px; margin-left:10px; position:relative; top:6px; margin-right:5px; }
+ .main .left-menu ul li .current { width:130px; background:url(image/left_menu_background_1.png) no-repeat; }
+
+.main .right-body { width:500px; min-height:400px; float:left; }
+.main .right-body .box { background-color:#c2bdbd; width:100%; min-height:300px; border-radius:15px; margin-top:15px; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 7px 7px #333; padding:25px 0px; }
+
+.main .right-body .form-edit { padding:15px 0px; width:95%; margin:0 auto; min-height:200px; background:url(image/edit_bg.png) repeat; border-radius:10px; overflow:hidden; margin-bottom:15px; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 2px 3px #999; }
+.main .right-body .form-edit td { color:#eee; }
+.main .right-body .form-edit input[type="text"] { width:100px; border-radius:3px; border:none; height:22px; padding:0px 5px; }
+
+.main .right-body .table-title { width:100px; position:relative; margin-left:3%; margin-bottom:10px; }
+.main .right-body .table-title img { width:110px; }
+.main .right-body .table-title span { position:absolute; left:15px; top:6px; color:#fff; }
+
+.main .right-body .table-list { background-color:#aaa; border-radius:10px; overflow:hidden; }
+.main .right-body .table-list th { background-color:#cbccd2; color:#333; }
+.main .right-body .table-list td { background-color:#efefef; }
+
+.line { width:95%; height:1px; margin:0 auto; background:#aaa; filter:alpha(opacity=20); opacity:0.2; margin-top:15px; margin-bottom:15px; }
+
+.button-bar { text-align:center; }
+.button-bar a, .button-bar input { margin-left:5px; margin-right:5px; }
+
+.search-bar { width:95%; margin:0 auto; margin-bottom:20px; position:relative; }
+.search-bar select option { height:26px; }
+.search-bar span { display:inline-block; background:#fff; }
+.search-bar input[type="text"] { height:26px !important; padding:0px 5px; margin:0px; border:none; }
+.search-bar input[type="image"] { position:relative; top:3px; margin-right:5px; }
+
+.action-button { padding:0 20px; border:1px solid #777; background:url(image/button_action_bg.png) repeat-x; min-width:50px; height:22px; line-height:22px; display:inline-block; border-radius:3px; text-align:center; text-decoration:none; color:#fff; }
+
+.tar { text-align:right; }
+
+.lh10 { line-height:10px !important; }
+
+.w60 { width:60px !important; }
+.w100 { width:100px !important; }
+
+.h30 { height:30px !important; }
+
+.mt20 { margin-top:20px !important; }
+.mb10 { margin-bottom:10px !important; }
+
+.pr30 { padding-right:30px !important; }
+

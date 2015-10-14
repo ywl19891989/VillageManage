@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link href="./style.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery.1.8.3.min.js"></script>
+<script src="js/common.js"></script>
+<title>社队内容</title>
+<style>
+.where-box { padding:6px 15px; color:#eee; border-radius:5px; display:inline-block; margin:5px; cursor:pointer; background:#3f3f3f; border:1px solid #5f5f5f; }
+.where-box img { display:inline-block; margin-left:50px; }
+.shezhang-name { font-size:36px; font-weight:bold; color:#fff; text-align:center; margin-bottom:20px; margin-top:20px; }
+.shezhang-line { height:1px; background:#111; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 2px 1px #333; width:90%; margin:0px auto 20px auto; }
+.shezhang-phone { color:#fff; font-size:28px; text-align:center; }
+.shezhang-footer { background:#dfdfdf; margin-top:20px; height:60px; line-height:60px; text-indent:20px; font-size:20px; color:#555; box-shadow:0 0 0 red, 0 0 0 yellow, 0 0 0 blue, 0px 20px 0px #dfdfdf; }
+.shezhang-footer .num { font-size:26px; }
+</style>
+</head>
+<body>
+
+<div class="navigation">
+	<a href="#" class="back-button"><img src="image/back_button.png" width="25" /></a>
+	<div class="title">社队内容</div>
+</div>
+
+<div class="main">
+	<div class="left-menu" id="J_left_menu">
+    	<ul>
+            <li><a href="#" class="current"><img src="image/left_menu_icon_9.png" />社队内容</a></li>
+            <li><a href="#"><img src="image/left_menu_icon_8.png" />户口详情</a></li>
+            <li><a href="#"><img src="image/left_menu_icon_7.png" />人口详情</a></li>
+            <li><a href="#"><img src="image/left_menu_icon_6.png" />院落详情</a></li>
+            <li><a href="#"><img src="image/left_menu_icon_5.png" />房屋详情</a></li>
+            <li><a href="#"><img src="image/left_menu_icon_4.png" />村落详情</a></li>
+        </ul>
+    </div>
+    <div class="right-body" id="J_right_body">
+    	<div class="box">   
+			<div class="form-edit" style="padding:10px 0px; margin-left:2%; width:55%; float:left; min-height:100px;">
+				<div class="where-box">自来水<img src="image/where_no_button.png" width="20" height="20" align="absmiddle" /></div>
+                <div class="where-box">供水<img src="image/where_no_button.png" width="20" height="20" align="absmiddle" /></div>
+                <div class="where-box">网络<img src="image/where_yes_button.png" width="20" height="20" align="absmiddle" /></div>
+                <div class="where-box">污水排放<img src="image/where_no_button.png" width="20" height="20" align="absmiddle" /></div>
+                <div class="where-box">邮寄方式<img src="image/where_kuaidi_button.png" width="46" height="20" align="absmiddle" /></div>
+                <div class="where-box">社队照片<img src="image/where_image_button.png" width="20" height="20" align="absmiddle" /></div>
+            </div>
+            <div class="form-edit" style="padding:10px 0px 0px 0px; margin-right:2%; width:40%; float:right;">
+            	<div class="shezhang-name">社长：王某某</div>
+                <div class="shezhang-line"></div>
+                <div class="shezhang-phone">13600000000</div>
+                <div class="shezhang-footer">参考院落数：<span class="num">39</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
